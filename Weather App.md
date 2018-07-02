@@ -29,3 +29,11 @@
 
 ## Asking the user for Location Permission
 * You won't be able to see the persion pop up come up. to fix that. 
+1. go to the Supporting Filles > Info.plist
+Add two key: Privacy - Location Usage De...
+             Privacy - Location When In Use ...
+1. Add appropriate values to each of those keys 
+1. right click on the info.plist and open it as a source code.
+1. copy paste the code in README.md under heading `Fix for App Transport Security Override`
+1. Paste the code after the value of the last key you just created. 
+1. run the app, the pop should appear and click allow. 
