@@ -50,9 +50,7 @@
         * it tells the delegate the new location data is available 
     * ` func didFailWithError` the full function name will pop up and tap enter
         * Tells the delegate that the location manager was unable to retrieve a location value
-
-
-NOTE: Remember the weatherViewController.swift is the delegate because of this line. `locationManager.delegate = self`
+    * NOTE: Remember the weatherViewController.swift is the delegate because of this line. `locationManager.delegate = self`
 1. Couple things to do in ` func didFailWithError`
     1. print the error. `print(error)`
     1. Tell the user that they have been a problem getting their location. `cityLabel.text = "Location Unavailable"`
