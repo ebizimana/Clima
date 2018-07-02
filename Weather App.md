@@ -40,16 +40,17 @@
 1. run the app, the pop should appear and click allow. 
 
 ## Tapping into the GPS
-1. Let's start getting the GPS coordinates of the device
+1. Let's start getting the GPS coordinates of the device. Under viewDidLoad() add this line.
     `locationManager.startUpdatingLocation()`
     * This is an Asynchronous Method: It works in the background so it doesn't freez the app.
-    * After `.startUpdatingLocation` finishes. we need to get the result from a method `didUpdateLocations`
+    * After `.startUpdatingLocation` finishes. we need to get the result from a method called `didUpdateLocations`
 1. Under the `MARK: - Location Manager Delegate Methods`
 1. write two delegate method 
     * ` func didUpdateLocation` the full function name will pop up and tap enter
         * it tells the delegate the new location data is available 
     * ` func didFailWithError` the full function name will pop up and tap enter
         * Tells the delegate that the location manager was unable to retrieve a location value
+NOTE: Remember the weatherViewController.swift is the delegate because of this line. `locationManager.delegate = self`
 1. Couple things to do in ` func didFailWithError`
     1. print the error. `print(error)`
     1. Tell the user that they have been a problem getting their location. `cityLabel.text = "Location Unavailable"`
