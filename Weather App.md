@@ -144,21 +144,90 @@ Under pragma mark called **Networking** we are going to do couple things
             }
         }
         ```
-    1. Because you are in a Closure (a function inside another function) you have to              include `self` key word to call another function or variable. the `self` key word         tells the compiler to search the function/variable inside your file                       `weatherViewControoler.swift`
+    1. Because you are in a Closure (a function inside another function) you have to              include `self` key word to call another function or variable. the `self` key word         tells the compiler to search the function/variable inside your file  `weatherViewControoler.swift`
 1. Under pragma mark called **JSON Parsin** write the function to grab the data that you want only from the data you got from the website
     ```Swift
         func updateWeatherData(json: JSON) {
             let tempResult = json["main"]["temp"]
         }
     ```
-    1. The whole `json` has 12 objects and they all nested in a specific order to navigate         to a specific value you need, you use the method shown above. 
-        1. This functionality is possible by SwiftyJSON
+    1. The whole `json` has 12 objects and they all nested in a specific order to navigate         to a            specific value you need, you use the method shown above. 
+        1. This functionality is possible by `SwiftyJSON`
 
+## Create a Weather Data Model 
+** Note:** The big reson to do this, is to divide our app in the MVC (Model, View, Controller) format. We want to separate the weather data from the weather controll so incase the controll fail the data is still functioning. 
+1. Switch to the `weatherDataModel.swift` file
+1. Create four variables to store the weather data that we want to use in our app
+    ```Swift
+        var temperature = 0    // To store the temprature
+        var condition = 0      // The id to use to get the weather icon
+        var city = ""         // to store the name of the city
+        var weatherIconName = ""   // to store the icon name to display on the screeen
+    ```
+1. switch back to `weatherViewController.swift`
+1. create an object of the `weatherDataModel` class
+    `let weatherDataModel = weatherDataModel()`
+1. let's update the `weatherDataModel` in the `updateWeatherData` function
+    ```Swift
+        func updateWeatherData(json: JSON) {
+           if  let tempResult = json["main"]["temp"].double {
+                weatherDataModel.temperature = Int(tempResult - 273.15.)
+                weatherDataModel.city = json["name"].stringValue
+                weatherDataModel.condition = json["weather"][0]["id"].intValue
+            }
+        }
+    ```
+    ### Data Type Conversion
+    1. `if let` is to make sure if the json is not valid our app doesn't crash.
+        * the json value can be invalid if the any of the params value (lat, long, appid) are invalid. 
+    1. `.double` converts the `tempResult` from a `JSON` data type to a `Double?` data type
+        * `if let` is an **Optional Binding** which make sure that the `tempResult` is nver `nil` so we                don't have to force unwrap it. 
+    1. We have to convert the `tempResult` from Kelvin to Celcius. hence `tempResult - 273.15`
+    1. `temperature` is of `Int` data type so we have to `Int(...)` to convert it to `Int` from `Double`
+    1. `.stringValue` converts `JSON` to `String`
+    1. `.intValue` converts `JSON` to `Int`
+    1. the `id` is a code that says what weather condition is (either: mist, sunny, snow...)
+1. Switch to the `weatherViewController.swift` and uncomment the `updateWatherIcon` **full** function. the     `updateWatherIcon` is a function that takes the weather `id` aka `condition` and look for an               appropriate weather image to assign to that `condition`
+1. Let's call the method to update the `weatherIconName`
+    ```Swift
+        func updateWeatherData(json: JSON) {
+           if  let tempResult = json["main"]["temp"].double {
+                weatherDataModel.temperature = Int(tempResult - 273.15.)
+                weatherDataModel.city = json["name"].stringValue
+                weatherDataModel.condition = json["weather"][0]["id"].intValue
+                weatherDataModel.weatherIconName = weatherDataModel.updateWeatherIcon(condition: weatherDataModel.condition)
+            } else {
+                cityLabel.text = "Weather Unavaible"
+            }
+        }
+    ```
+    1. In case of invalid `params` beacuse of reason provided  above, we want to inform the user that the            weather condition was unavailable.
 
-
-
-
-
-
-
-
+## Update the User Interface
+* **Note:** under the pragama mark called **UI Update**  write a function `updateUIWithWeatherData`. This               function is to Update the User interface geting the data from the `weatherDataModel`
+    ```Swift
+        func updateUIWithWeatherData() {
+            cityLabel.text = weatherDataWeather.city
+            temperatureLabel.text = Sting(weatherDataModel.temperature)
+            weatherIcon.image = UIImage(named: weatherDataModel.weatherIconName)
+        }
+    ```
+    1. Our app only shows three things: City Name, Temperature of that City and the Weather Icon that goes        with that temperature
+    1. with `Label` they always expeting `String` so you have to convert the `weatherDataModel.temperature`         to a `String`
+    1. in the `image` folder there is a lot images and they are specificly named. `weatherIcon:UIImage`            just became a place they are placed amd the `weatherDataModel.weatherIconName` choose which one to         be displayed
+1. lets call the function after Updating the Weateher Data:
+    ```Swift
+        func updateWeatherData(json: JSON) {
+           if  let tempResult = json["main"]["temp"].double {
+                weatherDataModel.temperature = Int(tempResult - 273.15.)
+                weatherDataModel.city = json["name"].stringValue
+                weatherDataModel.condition = json["weather"][0]["id"].intValue
+                weatherDataModel.weatherIconName = weatherDataModel.updateWeatherIcon(condition: weatherDataModel.condition)
+                
+                updateUIWithWeatherData()  // The New Line
+            } else {
+                cityLabel.text = "Weather Unavaible"
+            }
+        }
+    ```
+1. Run the App. Congraturation the First Part is Done. 
