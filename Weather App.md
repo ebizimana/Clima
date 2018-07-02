@@ -38,3 +38,42 @@
 1. copy paste the code in README.md under heading `Fix for App Transport Security Override`
 1. Paste the code after the value of the last key you just created. 
 1. run the app, the pop should appear and click allow. 
+
+## Tapping into the GPS
+1. Let's start getting the GPS coordinates of the device
+    `locationManager.startUpdatingLocation()`
+    * This is an Asynchronous Method: It works in the background so it doesn't freez the app.
+    * After `.startUpdatingLocation` finishes. we need to get the result from a method `didUpdateLocations`
+1. Under the `MARK: - Location Manager Delegate Methods`
+1. write two delegate method 
+    * ` func didUpdateLocation` the full function name will pop up and tap enter
+        * it tells the delegate the new location data is available 
+    * ` func didFailWithError` the full function name will pop up and tap enter
+        * Tells the delegate that the location manager was unable to retrieve a location value
+1. Couple things to do in ` func didFailWithError`
+    1. print the error. `print(error)`
+    1. Tell the user that they have been a problem getting their location. `cityLabel.text = "Location Unavailable"`
+1. Couple things to do in ` ffunc didUpdateLocation`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
