@@ -252,3 +252,47 @@ Under pragma mark called **Networking** we are going to do couple things
             
         }
     ```
+    * we have to declare ourselves as the delgate 
+        ```Swift
+            override func prepare (for segue:...){ // its swift func
+                if segue.identifier == "changeCityName" {
+                    let destinationVC = segue.destination as! ChangeCityViewController
+                    destiantionVC.delegate = self
+                }
+            }
+        ```
+        * we make the constant to be able to tap in the properties of the segue destination
+        * we used that ability to declare ourselves as delegates to handle anything from that come from the protocol 
+
+* switch to the `ChangeCityViewController.swift` file again:
+    * **Note:** what we want is afte the user has click `getWeather` button to pass info that is stored in `changeCityTextField` to the `WeatehrViewController.swift` file. 
+    * **To make it:** under the `getWeatherPressed`:
+    ```Swift
+        let cityName = changeCityTextField.text
+        delegate?.userEnteredANewCityName(city: cityName)
+        self.dismiss(anumated: true, completion: nil)
+    ```
+     * we stored the input in the `cityName` variable 
+     * we called the method to pass the info we got (`cityName`)to the `WeatehrViewController.swift`file. We had to make sure the delegate was not nil so that our code doesn't crash. 
+     * we dismissed the `ChangeCityViewController`
+        
+
+# How to send data forwards and Backwards 
+**Note:** To make this possible we have a new set up.
+* The app consist of:
+    * two view controllers: `FirstViewController` and `SecondViewController`
+    * two labels: `FirstLabel` and `SecondLabel`
+    * two text fields: `FirstTextField` and `SecondTextField`
+    * two buttons: `FirstButton` and `SecondButton`
+    * one segue called `backAndFront`
+    * **Note:** Everything that has a key word `First` belongs in the `FirstViewController` and evrything that has a keyword `Second` belongs to `SecondViewController`
+**The Purpose:** 
+    *_First Part_: The purpose of the app is two pass data back and front. so     we going to type something in the `FirstTextField` and press the             `FirstButton` and the data is going to pass through the segue and be         displayed in the `SecondLabel`
+    *_Second Part_: Once we are on the `SecondViewController` we are going to     type some input in the `SecondTextField` press the `SecondButton` and the data is going to pass through the segue and then be displayed in the `FirstLabel`
+**Let's get started:**
+1. first start tast is to send data form the `FirstViewController` to `SecondViewController` to do that we:
+    1. Go in the `FirstViewController.swift`file
+    2. override the prepare segue function
+    3. check to see if you are using the right segue 
+    4. declare a constant as a `segue.destination as SecondViewController`
+    5. switch to the `SecondViewController.swift`
