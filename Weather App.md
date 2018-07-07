@@ -231,3 +231,24 @@ Under pragma mark called **Networking** we are going to do couple things
         }
     ```
 1. Run the App. Congraturation the First Part is Done. 
+
+## Using Delegates and Protocols 
+* Switch in `ChangeCityViewController.swift` file
+* before the class declaration 
+* We have to create a Protocol
+    ```Swift
+        protocol ChangeCityDelegate{
+            func userEnteredANewCityName (city: String)
+        }
+        class ChangeCityViewController: UIViewController {
+            var delegate: ChangeCityDelegate?
+        }
+    ```
+* Switch back to the `WeatehrViewController.swift` inside we are going to do a couple things:
+    * Inheret the `ChangeCityDelegate`
+    * declare the function in the delegate
+    ```Swift
+        func userEnteredNewCityName(city: String) {
+            
+        }
+    ```
